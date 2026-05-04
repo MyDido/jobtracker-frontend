@@ -5,7 +5,7 @@ import authService from '../services/authService';
 
 function Login() {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true); // true = connexion, false = inscription
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -15,7 +15,6 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Gérer les changements dans les champs du formulaire
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -23,7 +22,6 @@ function Login() {
     });
   };
 
-  // Gérer la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -31,17 +29,13 @@ function Login() {
 
     try {
       if (isLogin) {
-        // Connexion
         await authService.login({
           email: formData.email,
           password: formData.password
         });
       } else {
-        // Inscription
         await authService.register(formData);
       }
-
-      // Rediriger vers le dashboard après succès
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Une erreur est survenue');
@@ -55,8 +49,14 @@ function Login() {
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         {/* Logo/Titre */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Job</h1>
-          <p className="text-gray-600 mt-2">Gérez vos candidatures facilement</p>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">JobTracker</h1>
+          <p className="text-gray-600 text-lg">Gérez vos candidatures professionnelles</p>
+          <p className="text-sm text-gray-500 mt-4">
+            Application web développée avec React et PostgreSQL
+          </p>
+          <p className="text-xs text-blue-600 mt-2 font-medium">
+            Par LEMOU E. Dieu donné - Projet Académique 2024-2025
+          </p>
         </div>
 
         {/* Toggle Connexion/Inscription */}
@@ -92,7 +92,6 @@ function Login() {
 
         {/* Formulaire */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Champs nom et prénom (uniquement pour inscription) */}
           {!isLogin && (
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -122,7 +121,6 @@ function Login() {
             </div>
           )}
 
-          {/* Email */}
           <div>
             <label className="block text-gray-700 text-sm font-medium mb-2">
               Email
@@ -138,7 +136,6 @@ function Login() {
             />
           </div>
 
-          {/* Mot de passe */}
           <div>
             <label className="block text-gray-700 text-sm font-medium mb-2">
               Mot de passe
@@ -154,7 +151,6 @@ function Login() {
             />
           </div>
 
-          {/* Bouton de soumission */}
           <button
             type="submit"
             disabled={loading}
