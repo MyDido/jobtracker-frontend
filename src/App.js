@@ -1,6 +1,7 @@
 // src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home';  // ← AJOUTER CETTE LIGNE
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AddCandidature from './pages/AddCandidature';
@@ -11,11 +12,13 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Route page d'accueil */}
+        <Route path="/" element={<Home />} />  {/* ← AJOUTER CETTE LIGNE */}
+
         {/* Route publique : Login */}
         <Route 
           path="/login" 
           element={
-            // Si déjà connecté, rediriger vers dashboard
             authService.isAuthenticated() ? 
               <Navigate to="/dashboard" replace /> : 
               <Login />
@@ -50,27 +53,8 @@ function App() {
           } 
         />
 
-        {/* Route par défaut : rediriger vers dashboard si connecté, sinon login */}
-        <Route 
-          path="/" 
-          element={
-            <Navigate 
-              to={authService.isAuthenticated() ? "/dashboard" : "/login"} 
-              replace 
-            />
-          } 
-        />
-
-        {/* Route 404 : toute autre URL */}
-        <Route 
-          path="*" 
-          element={
-            <Navigate 
-              to={authService.isAuthenticated() ? "/dashboard" : "/login"} 
-              replace 
-            />
-          } 
-        />
+        {/* Route 404 */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
