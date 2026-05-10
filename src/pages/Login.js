@@ -38,45 +38,46 @@ function Login() {
       }
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Une erreur est survenue');
+      console.error('Erreur complète:', err);
+      setError(err.response?.data?.message || 'Une erreur est survenue. Vérifiez vos identifiants.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-        {/* Logo/Titre */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+        
+        {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">JobTracker</h1>
-          <p className="text-gray-600 text-lg">Gérez vos candidatures professionnelles</p>
-          <p className="text-sm text-gray-500 mt-4">
-            Application web développée avec React et PostgreSQL
-          </p>
-          <p className="text-xs text-blue-600 mt-2 font-medium">
-            Par LEMOU E. Dieu donné - Projet Académique 2024-2025
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-xl mb-4">
+            <span className="text-white font-bold text-2xl">J</span>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">JobTracker</h1>
+          <p className="text-gray-600 mt-2">
+            {isLogin ? 'Bienvenue ! Connectez-vous' : 'Créez votre compte'}
           </p>
         </div>
 
-        {/* Toggle Connexion/Inscription */}
-        <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+        {/* Toggle */}
+        <div className="flex mb-8 bg-gray-100 rounded-xl p-1">
           <button
             onClick={() => setIsLogin(true)}
-            className={`flex-1 py-2 rounded-md transition ${
+            className={`flex-1 py-3 rounded-lg font-medium transition ${
               isLogin
-                ? 'bg-white text-blue-600 shadow'
-                : 'text-gray-600'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             Connexion
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`flex-1 py-2 rounded-md transition ${
+            className={`flex-1 py-3 rounded-lg font-medium transition ${
               !isLogin
-                ? 'bg-white text-blue-600 shadow'
-                : 'text-gray-600'
+                ? 'bg-white text-blue-600 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             Inscription
@@ -85,17 +86,19 @@ function Login() {
 
         {/* Message d'erreur */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
+          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded mb-6">
+            <p className="font-medium">Erreur</p>
+            <p className="text-sm">{error}</p>
           </div>
         )}
 
         {/* Formulaire */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          
           {!isLogin && (
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Nom
                 </label>
                 <input
@@ -103,11 +106,12 @@ function Login() {
                   name="nom"
                   value={formData.nom}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  placeholder="Dupont"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Prénom
                 </label>
                 <input
@@ -115,14 +119,15 @@ function Login() {
                   name="prenom"
                   value={formData.prenom}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  placeholder="Jean"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
             <input
@@ -131,13 +136,13 @@ function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               placeholder="exemple@email.com"
             />
           </div>
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Mot de passe
             </label>
             <input
@@ -146,7 +151,7 @@ function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               placeholder="••••••••"
             />
           </div>
@@ -154,9 +159,19 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-blue-600 text-white py-3.5 rounded-lg hover:bg-blue-700 transition font-semibold shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
           >
-            {loading ? 'Chargement...' : isLogin ? 'Se connecter' : 'S\'inscrire'}
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                </svg>
+                Chargement...
+              </span>
+            ) : (
+              isLogin ? 'Se connecter' : 'Créer mon compte'
+            )}
           </button>
         </form>
       </div>
